@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// Copyright © 2014 - 2018 Esri. All Rights Reserved.
+// Copyright © Esri. All Rights Reserved.
 //
 // Licensed under the Apache License Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ define(['dojo/_base/declare',
     'dojo/_base/html',
     'dojo/_base/array',
     'dojo/on',
+    'dojo/keys',
     'dojo/aspect',
     'jimu/BaseWidgetPanel',
     'jimu/BaseWidgetFrame',
@@ -27,7 +28,7 @@ define(['dojo/_base/declare',
     './FoldableWidgetFrame'
   ],
   function(
-    declare, lang, html, array, on, aspect, BaseWidgetPanel,
+    declare, lang, html, array, on, keys, aspect, BaseWidgetPanel,
     BaseWidgetFrame, utils, FoldableDijit, FoldableWidgetFrame
   ) {
     var borderRadius = '4px';
@@ -43,15 +44,26 @@ define(['dojo/_base/declare',
       closeAnimation: 'fadeOut',
       animationDuration: 500,
 
+      postMixInProperties:function(){
+        this.headerNls = window.jimuNls.panelHeader;
+      },
       startup: function() {
         this.titleHeight = 35;
         this.inherited(arguments);
 
         html.addClass(this.titleNode, 'jimu-panel-title jimu-main-background');
-        this.createCloseBtn();
-        this.createMaxBtn();
+        //use flex instead of float-right
         this.createFoldableBtn();
+        this.createMaxBtn();
+        this.createCloseBtn();
         this.panelManager.normalizePanel(this);
+
+        html.setAttr(this.domNode, 'role', 'application');
+        this.own(on(this.domNode, 'keydown', lang.hitch(this, function(evt){
+          if(!html.hasClass(evt.target, 'close-btn') && evt.keyCode === keys.ESCAPE){
+            this.closeNode.focus();
+          }
+        })));
       },
 
       getPanelPosition: function(){
@@ -89,7 +101,10 @@ define(['dojo/_base/declare',
       onOpen: function(){
         this.inherited(arguments);
         this.onNormalize();
-
+        //normalizePanel when cursor leaves the panel.
+        if(utils.isInNavMode() && this.windowState === 'minimized') {
+          this.onFoldableNodeClick();
+        }
         //MJM - Close all individual widgets within grouped folder on every open
         if (this.config.label == 'Add More Data'){ //only do for this grouped widget
           array.forEach(this.getChildren(), function(frame) {
@@ -101,7 +116,6 @@ define(['dojo/_base/declare',
           this.onMaxNodeClick();  //open group panel - check for other panels
        }
         //MJM end
-
       },
 
       onNormalize: function(){
@@ -200,23 +214,47 @@ define(['dojo/_base/declare',
 
       createCloseBtn: function() {
         this.closeNode = html.create('div', {
-          'class': 'close-btn jimu-float-trailing'
-        }, this.titleNode);
+          'class': 'close-btn',
+          'role': 'button',
+          'aria-label': this.headerNls.closeWindow,
+          'tabindex': 0
+        }, this.btnsContainer);
 
         this.own(on(this.closeNode, 'click', lang.hitch(this, function(evt) {
           evt.stopPropagation();
           this.panelManager.closePanel(this);
         })));
+
+        this.own(on(this.closeNode, 'keydown', lang.hitch(this, function(evt) {
+          if(evt.keyCode === keys.ENTER || evt.keyCode === keys.SPACE){
+            this.panelManager.closePanel(this);
+          }
+          //prevent user uses tab-key to widget's first focusable node.
+          // else if(!evt.shiftKey && evt.keyCode === keys.TAB){
+          //   evt.preventDefault();
+          // }
+
+        })));
       },
 
       createMaxBtn: function(){
         this.maxNode = html.create('div', {
-          'class': 'max-btn jimu-float-trailing'
-        }, this.titleNode);
+          'class': 'max-btn',
+          'role': 'button',
+          'aria-label': this.headerNls.maxWindow,
+          'tabindex': 0
+        }, this.btnsContainer);
 
         this.own(on(this.maxNode, 'click', lang.hitch(this, function(evt) {
           evt.stopPropagation();
           this.onMaxNodeClick();
+        })));
+
+        this.own(on(this.maxNode, 'keydown', lang.hitch(this, function(evt) {
+          if(evt.keyCode === keys.ENTER || evt.keyCode === keys.SPACE){
+            evt.stopPropagation();
+            this.onMaxNodeClick();
+          }
         })));
       },
 
@@ -261,13 +299,21 @@ define(['dojo/_base/declare',
         } else {
           this.panelManager.minimizePanel(this);
         }
+        //set max btn's label
+        html.setAttr(this.maxNode, 'aria-label', this.headerNls.maxWindow);
       },
 
       onMaxNodeClick: function() {
         if (this.windowState === 'maximized') {
+          html.setAttr(this.maxNode, 'aria-label', this.headerNls.maxWindow);
           this.panelManager.normalizePanel(this);
         } else {
+          html.setAttr(this.maxNode, 'aria-label', this.headerNls.restoreWindow);
           this.panelManager.maximizePanel(this);
+          //set foldable btn's styles
+          this.folded = false;
+          html.removeClass(this.foldableNode, 'folded');
+          html.setAttr(this.foldableNode, 'aria-label', this.headerNls.foldWindow);
         }
       },
 
