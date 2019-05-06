@@ -92,6 +92,11 @@ define(['dojo/_base/declare',
             evt.preventDefault();
           }
         })));
+        //MJM - Close all individual widgets within grouped folder on initialization (like onFoldableNodeClick)
+        if (this.titleLabelNode.title == ''){  //Not 'Add More Data' grouped folder, but one of the three individual  widgets
+          this.folded = true;
+          html.addClass(this.foldableNode, 'folded');
+        } //end MJM
       },
 
       onFoldableNodeClick: function(){
