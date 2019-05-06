@@ -105,6 +105,17 @@ define(['dojo/_base/declare',
         if(utils.isInNavMode() && this.windowState === 'minimized') {
           this.onFoldableNodeClick();
         }
+        //MJM - Close all individual widgets within grouped folder on every open
+        if (this.config.label == 'Add More Data'){ //only do for this grouped widget
+          array.forEach(this.getChildren(), function(frame) {
+             frame.foldEnable = true;
+             frame.folded = true;
+             html.addClass(frame.foldableNode, 'folded');
+               this.onFoldableNodeClick(frame);  //closes group panel and individual widget panels based on parameters reset above
+          }, this);
+          this.onMaxNodeClick();  //open group panel - check for other panels
+       }
+        //MJM end
       },
 
       onNormalize: function(){
