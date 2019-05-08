@@ -4,8 +4,8 @@ Staff DART files to add new behavior to grouped add data widgets:
 
 Version 2.12
 
-INSTRUCTIONS:
-1. Copy Panel.js to folder \themes\FoldableTheme\panels\FoldablePanel
+### INSTRUCTIONS:
+* Copy Panel.js to folder \themes\FoldableTheme\panels\FoldablePanel\
 
 ```bash
 BUG NOTES:
