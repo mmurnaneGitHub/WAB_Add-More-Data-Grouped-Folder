@@ -1,6 +1,5 @@
 ## WAB_Add-More-Data-Grouped-Folder
-Staff DART files to add new behavior to grouped add data widgets: 
-1. Close all widgets on startup and close all widgets onOpen of Group (Panel.js).
+Overrides default behavior of grouped widgets.  Used in the staff DART Map 'Add More Data' section. Closes all grouped widgets on startup and closes all widgets onOpen.
 
 Version 2.12
 
