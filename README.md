@@ -1,5 +1,5 @@
 ## WAB_Add-More-Data-Grouped-Folder
-Overrides default behavior of grouped widgets.  Used in the staff DART Map 'Add More Data' section. Closes all grouped widgets on startup and closes all widgets onOpen.
+Overrides default behavior of grouped widgets.  Closes all grouped widgets on startup and closes all widgets onOpen. Used in the staff DART Map 'Add More Data' section. 
 
 Version 2.12
 
