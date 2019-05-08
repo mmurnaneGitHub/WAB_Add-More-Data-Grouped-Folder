@@ -8,7 +8,7 @@ Version 2.12
 
 ```bash
 BUG NOTES:
-Open/close icon not working since v2.10.  Icon exists in \themes\FoldableTheme\panels\FoldablePanel\images\ folder but is not rendered correctly by ESRI code
+Open/close icon not working since v2.10.  Icon exists in \themes\FoldableTheme\panels\FoldablePanel\images\ folder but is not rendered correctly by ESRI code.
 
 HTML version comparison:
 
