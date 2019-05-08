@@ -19,7 +19,7 @@ Version comparison for html:
 </div>
 
 2.10
-<div class="title-label" data-dojo-attach-point="titleLabelNode" title="Add CSV File" style="line-height: 30px;">Add CSV File</div>
+<div class="title-label" data-dojo-attach-point="titleLabelNode" title="Add ESRI Data" style="line-height: 30px;">Add ESRI Data</div>
 <div class="foldable-btn jimu-float-trailing folded"></div>
 
 ```
