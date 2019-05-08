@@ -10,7 +10,7 @@ Version 2.12
 BUG NOTES:
 Open/close icon not working since v2.10.  Icon exists in \themes\FoldableTheme\panels\FoldablePanel\images\ folder but is not rendered correctly by ESRI code
 
-Version comparison for html:
+HTML version comparison:
 
 2.12
 <div class="title-label" data-dojo-attach-point="titleLabelNode" title="Add ESRI Data" style="line-height: 30px;">Add ESRI Data</div>
