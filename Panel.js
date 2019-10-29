@@ -58,7 +58,6 @@ define(['dojo/_base/declare',
         this.createCloseBtn();
         this.panelManager.normalizePanel(this);
 
-        html.setAttr(this.domNode, 'role', 'application');
         this.own(on(this.domNode, 'keydown', lang.hitch(this, function (evt) {
           if (!html.hasClass(evt.target, 'close-btn') && evt.keyCode === keys.ESCAPE) {
             this.closeNode.focus();
@@ -118,19 +117,19 @@ define(['dojo/_base/declare',
         };  //End MJM
       },
 
-      _mjmGroupFolderClose: function() { //MJM - Close all individual widgets within grouped folder on initialization (at least make seetings correct for closing)
-        array.forEach(this.getChildren(), function(frame) { //Close All grouped widgets
+      _mjmGroupFolderClose: function () { //MJM - Close all individual widgets within grouped folder on initialization (at least make seetings correct for closing)
+        array.forEach(this.getChildren(), function (frame) { //Close All grouped widgets
           frame.folded = true; //collapse the section
           html.addClass(this.foldableNode, 'folded'); //Make sure the class is rendered
         }, this);
       },
 
-      _mjmGroupFolder: function() { //MJM - Close all individual widgets within grouped folder on every open - ESRI not rendering behavior correctly otherwise
-        array.forEach(this.getChildren(), function(frame) { //OPEN All Sections - otherwise just get a line for title bar when closed (Workaround forerrors in Esri's code)
+      _mjmGroupFolder: function () { //MJM - Close all individual widgets within grouped folder on every open - ESRI not rendering behavior correctly otherwise
+        array.forEach(this.getChildren(), function (frame) { //OPEN All Sections - otherwise just get a line for title bar when closed (Workaround forerrors in Esri's code)
           frame.folded = false; //open the section
           this.onFoldableNodeClick(frame); //opens group panel and individual widget panels based on parameters reset above
         }, this);
-        array.forEach(this.getChildren(), function(frame) { //CLOSE All sections
+        array.forEach(this.getChildren(), function (frame) { //CLOSE All sections
           frame.folded = true; //collapse the section
           this.onFoldableNodeClick(frame); //closes group panel and individual widget panels based on parameters reset above
         }, this);
